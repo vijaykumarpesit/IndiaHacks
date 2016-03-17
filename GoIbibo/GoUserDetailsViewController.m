@@ -10,7 +10,7 @@
 #import "GoUserDetailsCell.h"
 #import "GoPaymentConfirmation.h"
 
-@interface GoUserDetailsViewController () <UITableViewDataSource, UITabBarDelegate, UITextFieldDelegate>
+@interface GoUserDetailsViewController () <UITableViewDataSource, UITabBarDelegate, UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 
 @property (nonatomic, strong) NSMutableDictionary *userDetailsDictionary;
 @property (nonatomic, strong) NSArray *userDetialsInfo;
@@ -19,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *selectedSeats;
 @property (weak, nonatomic) IBOutlet UILabel *busFare;
 @property (weak, nonatomic) IBOutlet UISwitch *userPrivacySwitch;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
+@property (nonatomic, strong) NSArray *permissions;
+@property (nonatomic, assign) BOOL canShareWithFriends;
 @end
 
 @implementation GoUserDetailsViewController
@@ -52,6 +55,8 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
+
+    self.permissions = @[@"None",@"Phonebook",@"Phonebook+FB",@"Public"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -97,7 +102,7 @@
 
 - (void)doneButtonTapped:(id)sender {
     GoPaymentConfirmation *paymentConfirmation = [[GoPaymentConfirmation alloc] initWithBusDetails:self.goBusDetails withSeatNoDictionary:self.userDetailsDictionary];
-    paymentConfirmation.shouldSend = self.userPrivacySwitch.on;
+    paymentConfirmation.shouldSend =  self.canShareWithFriends;
     [self.navigationController pushViewController:paymentConfirmation animated:YES];
 }
 
@@ -112,14 +117,42 @@
     [dict setObject:textField.text forKey:[self.userDetialsInfo objectAtIndex:row]];
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+
+
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component;
+{
+    return self.permissions.count;
 }
-*/
 
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel* tView = (UILabel*)view;
+    if (!tView)
+    {
+        tView = [[UILabel alloc] init];
+        [tView setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+        [tView setTextAlignment:NSTextAlignmentCenter];
+    }
+    // Fill the label text here
+    tView.text=[self.permissions objectAtIndex:row];
+    return tView;
+}
+
+
+- (CGSize)rowSizeForComponent:(NSInteger)component {
+    
+    return CGSizeMake(self.pickerView.bounds.size.width, 60.0f);
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (void)pickerView:(UIPickerView *)pV didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    self.canShareWithFriends = (row !=0);
+}
 @end
