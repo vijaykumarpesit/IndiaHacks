@@ -92,7 +92,13 @@
     self.typeSelectionSwitch.sliderColor = [UIColor colorWithRed:100/255.0 green:177/255.0 blue:185/255.0 alpha:1.0];
     self.typeSelectionSwitch.textColorFront = [UIColor whiteColor];
     self.typeSelectionSwitch.textColorBack = [UIColor whiteColor];
+    [self.typeSelectionSwitch addTarget:self action:@selector(journeyTypeChanged:) forControlEvents:UIControlEventValueChanged];
+    self.isInLongTripMode = YES;
     
+}
+
+- (IBAction)journeyTypeChanged:(id)sender {
+    self.isInLongTripMode = (self.typeSelectionSwitch.selectedIndex == 0);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -189,10 +195,7 @@
 }
 
 
-- (void)handleRecognizerTap:(UITapGestureRecognizer * __nonnull)recognizer {
-    
-    self.isInLongTripMode = (self.typeSelectionSwitch.selectedIndex == 0);
-}
+
 
 #pragma mark - CalendarManager delegate
 
