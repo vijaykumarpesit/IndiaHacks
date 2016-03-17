@@ -15,6 +15,8 @@
 #import "GoIbibo-swift.h"
 #import "GoMapCell.h"
 #import "GoLocation.h"
+#import "GoRouteViewController.h"
+
 @import GoogleMaps;
 
 
@@ -183,7 +185,11 @@
         GoBusListViewController *vc = [[GoBusListViewController alloc] initWithSource:source destination:destination departureDate:(_dateSelected ? _dateSelected : _todayDate) arrivalDate:nil];
         [self.navigationController pushViewController:vc animated:YES];
     } else {
-        //Short trip
+        GoRouteViewController *routeVC = [[GoRouteViewController alloc] initWithNibName:@"GoRouteViewController" bundle:nil];
+        routeVC.sourceLocation = self.sourceLocation;
+        routeVC.destinationLocation = self.destinationLocation;
+        [self.navigationController pushViewController:routeVC animated:YES];
+        
     }
 }
 
@@ -199,6 +205,8 @@
 
 - (IBAction)journeyTypeChanged:(id)sender {
     self.isInLongTripMode = (self.typeSelectionSwitch.selectedIndex == 0);
+    self.sourceLocation = nil;
+    self.destinationLocation = nil;
     [self.optionTableView reloadData];
 }
 
@@ -546,4 +554,6 @@
     }
     return location;
 }
+
+
 @end

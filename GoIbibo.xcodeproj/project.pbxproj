@@ -42,6 +42,8 @@
 		B126EA9E1C6F16E6002D14F0 /* GoMapCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B126EA9C1C6F16E6002D14F0 /* GoMapCell.m */; };
 		B126EA9F1C6F16E6002D14F0 /* GoMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B126EA9D1C6F16E6002D14F0 /* GoMapCell.xib */; };
 		B126EAA11C6F21A9002D14F0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B126EAA01C6F21A9002D14F0 /* MapKit.framework */; };
+		B132D5621C9ADCC500CE514B /* GoRouteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B132D5601C9ADCC500CE514B /* GoRouteViewController.m */; };
+		B132D5631C9ADCC500CE514B /* GoRouteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B132D5611C9ADCC500CE514B /* GoRouteViewController.xib */; };
 		B13614991C9A6E9900A2BB1B /* equi-map.png in Resources */ = {isa = PBXBuildFile; fileRef = B13614961C9A6E9900A2BB1B /* equi-map.png */; };
 		B136149A1C9A6E9900A2BB1B /* equi-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B13614971C9A6E9900A2BB1B /* equi-map@2x.png */; };
 		B136149B1C9A6E9900A2BB1B /* locations.json in Resources */ = {isa = PBXBuildFile; fileRef = B13614981C9A6E9900A2BB1B /* locations.json */; };
@@ -134,6 +136,9 @@
 		B126EA9C1C6F16E6002D14F0 /* GoMapCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoMapCell.m; sourceTree = "<group>"; };
 		B126EA9D1C6F16E6002D14F0 /* GoMapCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoMapCell.xib; sourceTree = "<group>"; };
 		B126EAA01C6F21A9002D14F0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		B132D55F1C9ADCC500CE514B /* GoRouteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoRouteViewController.h; sourceTree = "<group>"; };
+		B132D5601C9ADCC500CE514B /* GoRouteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoRouteViewController.m; sourceTree = "<group>"; };
+		B132D5611C9ADCC500CE514B /* GoRouteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoRouteViewController.xib; sourceTree = "<group>"; };
 		B13614961C9A6E9900A2BB1B /* equi-map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "equi-map.png"; path = "../equi-map.png"; sourceTree = "<group>"; };
 		B13614971C9A6E9900A2BB1B /* equi-map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "equi-map@2x.png"; path = "../equi-map@2x.png"; sourceTree = "<group>"; };
 		B13614981C9A6E9900A2BB1B /* locations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = locations.json; path = ../locations.json; sourceTree = "<group>"; };
@@ -329,6 +334,9 @@
 				54C4B2001BB3C09500110592 /* GoSearchPlaceViewController.h */,
 				54C4B2011BB3C09500110592 /* GoSearchPlaceViewController.m */,
 				54C4B2021BB3C09500110592 /* GoSearchPlaceViewController.xib */,
+				B132D55F1C9ADCC500CE514B /* GoRouteViewController.h */,
+				B132D5601C9ADCC500CE514B /* GoRouteViewController.m */,
+				B132D5611C9ADCC500CE514B /* GoRouteViewController.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -519,6 +527,7 @@
 				547A06281BB401F90079F1CC /* EndLocation.png in Resources */,
 				546DE9881BB6B6C9005E5A8F /* Checkmark@2x.png in Resources */,
 				B136149A1C9A6E9900A2BB1B /* equi-map@2x.png in Resources */,
+				B132D5631C9ADCC500CE514B /* GoRouteViewController.xib in Resources */,
 				B151F6861BB335750017D908 /* GoSeatMetrixViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -609,6 +618,7 @@
 				B1EDDECB1BB10A4100518E0C /* main.m in Sources */,
 				54C4B2031BB3C09500110592 /* GoSearchPlaceViewController.m in Sources */,
 				B1EA1FCD1BB2AA9E00A6B580 /* GoBusInfoCell.m in Sources */,
+				B132D5621C9ADCC500CE514B /* GoRouteViewController.m in Sources */,
 				546DE98D1BB6BC45005E5A8F /* GoSeatSeletionHeaderView.m in Sources */,
 				B1EDDEF81BB14C9D00518E0C /* GoContactSync.m in Sources */,
 				B10D989E1BB24E97005D74D1 /* GoBusListViewController.m in Sources */,
