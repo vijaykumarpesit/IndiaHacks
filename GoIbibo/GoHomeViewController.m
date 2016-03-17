@@ -99,6 +99,7 @@
 
 - (IBAction)journeyTypeChanged:(id)sender {
     self.isInLongTripMode = (self.typeSelectionSwitch.selectedIndex == 0);
+    [self.optionTableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
