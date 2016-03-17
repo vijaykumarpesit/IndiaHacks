@@ -7,14 +7,16 @@
 //
 
 #import "GoSearchPlaceViewController.h"
+#import "GoLocation.h"
 
 @interface GoSearchPlaceViewController () <UISearchBarDelegate>
 
-@property (nonatomic, copy) NSString *selectedPlace;
+@property (nonatomic, strong) GoLocation *selectedPlace;
 @property (nonatomic, strong) NSMutableArray *placeArray;
 @property (nonatomic, strong) NSMutableArray *searchPlaceArray;
 @property (nonatomic) BOOL isSearching;
 @property (weak, nonatomic) IBOutlet UISearchBar *seachBar;
+
 
 @end
 
@@ -24,19 +26,28 @@
     [super viewDidLoad];
     _placeArray = [NSMutableArray array];
     _searchPlaceArray = [NSMutableArray array];
-    [_placeArray addObject:@"Bangalore"];
-    [_placeArray addObject:@"Chennai"];
-    [_placeArray addObject:@"Hyderabad"];
-    [_placeArray addObject:@"Sirsi"];
-    [_placeArray addObject:@"Kollam"];
-    [_placeArray addObject:@"Mandya"];
-    [_placeArray addObject:@"Mumbai"];
-    [_placeArray addObject:@"Pondicherry"];
-    [_placeArray addObject:@"Mysore"];
-    [_placeArray addObject:@"Hubli"];
-
+    
+    [self addLocationWithName:@"Bangalore" lattitude:12.9667 longitude:77.5667];
+    [self addLocationWithName:@"Chennai" lattitude:13.0827 longitude:80.2707];
+    [self addLocationWithName:@"Hyderabad" lattitude:17.3700 longitude:78.4800];
+    [self addLocationWithName:@"Sirsi" lattitude:14.6195 longitude:74.8354];
+    [self addLocationWithName:@"Kollam" lattitude:8.8800 longitude:76.6000];
+    [self addLocationWithName:@"Mandya" lattitude:12.5200 longitude:76.9000];
+    [self addLocationWithName:@"Mumbai" lattitude:18.9750 longitude:72.8258];
+    [self addLocationWithName:@"Pondicherry" lattitude:11.9310 longitude:79.7852];
+    [self addLocationWithName:@"Mysore" lattitude:12.9702 longitude:77.5603];
+    [self addLocationWithName:@"Hubli" lattitude:15.3617 longitude:75.0850];
+    
     self.seachBar.delegate = self;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(rightBarButtonItemPressed:)];
+}
+
+- (void)addLocationWithName:(NSString *)name lattitude:(CGFloat)lattitude longitude:(CGFloat)longitude {
+    GoLocation *location  = [[GoLocation alloc] init];
+    location.name = name;
+    location.location = [[CLLocation alloc] initWithLatitude:lattitude longitude:longitude];
+    [self.placeArray addObject:location];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -72,11 +83,13 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SearchPlace"];
     }
     if (self.isSearching) {
-        cell.textLabel.text = self.searchPlaceArray[indexPath.row];
+        GoLocation *location = self.searchPlaceArray[indexPath.row];
+        cell.textLabel.text = location.name;
     } else {
-        cell.textLabel.text = self.placeArray[indexPath.row];
+        GoLocation *location = self.placeArray[indexPath.row];
+        cell.textLabel.text = location.name;
     }
-    if ([self.selectedPlace isEqualToString:cell.textLabel.text]) {
+    if ([self.selectedPlace.name isEqualToString:cell.textLabel.text]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     return cell;

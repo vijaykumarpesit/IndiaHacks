@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GoLocation.h"
 
-typedef void(^UpdateSelectedPlace)(NSString *);
+typedef void(^UpdateSelectedPlace)(GoLocation *);
 @interface GoSearchPlaceViewController : UITableViewController
 
 @property (nonatomic) BOOL isSourcePlace;

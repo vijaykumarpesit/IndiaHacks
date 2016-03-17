@@ -38,8 +38,10 @@
 @property (nonatomic, strong) GoLocation *destinationLocation;
 
 
+@property (weak, nonatomic) IBOutlet UIView *offerRide;
 
 @property (weak, nonatomic) IBOutlet UIView *buttonsView;
+@property (weak, nonatomic) IBOutlet UIView *findRide;
 
 @end
 
@@ -47,7 +49,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.isInLongTripMode = YES;
+
     self.title = @"Go Buddies";
     
     self.locationManager = [[CLLocationManager alloc] init];
@@ -93,13 +96,15 @@
     self.typeSelectionSwitch.textColorFront = [UIColor whiteColor];
     self.typeSelectionSwitch.textColorBack = [UIColor whiteColor];
     [self.typeSelectionSwitch addTarget:self action:@selector(journeyTypeChanged:) forControlEvents:UIControlEventValueChanged];
-    self.isInLongTripMode = YES;
     
-}
+    UIGestureRecognizer *offeresture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(offerRideAndService)];
+    [self.offerRide addGestureRecognizer:offeresture];
+    [self.offerRide setUserInteractionEnabled:YES];
+    
+    UIGestureRecognizer *findgesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(findRideAndService)];
+    [self.findRide addGestureRecognizer:findgesture];
+    [self.findRide setUserInteractionEnabled:YES];
 
-- (IBAction)journeyTypeChanged:(id)sender {
-    self.isInLongTripMode = (self.typeSelectionSwitch.selectedIndex == 0);
-    [self.optionTableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -151,50 +156,51 @@
 - (void)presentSearchPlaceViewControllerIsForSourcePlace:(BOOL)isSourcePlace {
     GoSearchPlaceViewController *gosearchPlaceViewController = [[GoSearchPlaceViewController alloc] initWithNibName:@"GoSearchPlaceViewController" bundle:nil];
     gosearchPlaceViewController.isSourcePlace = isSourcePlace;
-    gosearchPlaceViewController.updateSelectedPlace = ^void(NSString *selectedPlace){
-        if (selectedPlace) {
+    gosearchPlaceViewController.updateSelectedPlace = ^void(GoLocation *location){
+        if (location) {
             if (isSourcePlace) {
-                ((UILabel *)[[self.sourceView subviews] objectAtIndex:2]).attributedText = [[NSAttributedString alloc] initWithString:selectedPlace attributes:nil];
+                self.sourceLocation = location;
             } else {
-                ((UILabel *)[[self.destinationView subviews] objectAtIndex:2]).attributedText = [[NSAttributedString alloc] initWithString:selectedPlace attributes:nil];
+                self.destinationLocation = location;
+                
             }
         }
+        [self.optionTableView reloadData];
     };
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:gosearchPlaceViewController];
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
+
 - (void)destinationViewTapped:(id)sender {
     [self presentSearchPlaceViewControllerIsForSourcePlace:NO];
 }
 
-- (void)searchBusesLabelTapped:(id)sender {
-    NSString *source = [[self.sourceView.subviews objectAtIndex:2] attributedText].string.lowercaseString;
-    NSString *destination = [[self.destinationView.subviews objectAtIndex:2] attributedText].string.lowercaseString;
-    NSString *alertControllerTitle = nil;
-    NSString *alertControllerMessaage = nil;
-    if ([source isEqualToString:@"source"]) {
-        alertControllerTitle = @"Source Place Not Set";
-        alertControllerMessaage = @"Please select the source of the journey";
-    } else if ([destination isEqualToString:@"destination"]) {
-        alertControllerTitle = @"Destination Place Not Set";
-        alertControllerMessaage = @"Please select the destination of the journey";
-    } else if ([source isEqualToString:destination]) {
-        alertControllerTitle = @"Same Destination";
-        alertControllerMessaage = @"Please set the proper source/destination";
-    }
+- (void)findRideTapped {
+    NSString *source = self.sourceLocation.name.lowercaseString;
+    NSString *destination = self.destinationLocation.name.lowercaseString;
     
-    if (alertControllerTitle) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertControllerTitle message:alertControllerMessaage preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            [alertController dismissViewControllerAnimated:YES completion:nil];
-        }]];
-        [self.navigationController presentViewController:alertController animated:YES completion:nil];
-    } else {
+    if (self.isInLongTripMode) {
         GoBusListViewController *vc = [[GoBusListViewController alloc] initWithSource:source destination:destination departureDate:(_dateSelected ? _dateSelected : _todayDate) arrivalDate:nil];
         [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        //Short trip
     }
 }
 
+- (void)offerRideAndService {
+    
+    
+}
+
+- (void)findRideAndService {
+    
+    [self findRideTapped];
+}
+
+- (IBAction)journeyTypeChanged:(id)sender {
+    self.isInLongTripMode = (self.typeSelectionSwitch.selectedIndex == 0);
+    [self.optionTableView reloadData];
+}
 
 
 
@@ -384,6 +390,7 @@
         GoLocation *sourceLoc = self.sourceLocation;
         if (!sourceLoc) {
             sourceLoc = [self defaultSourceLocation];
+            self.sourceLocation = sourceLoc;
         }
         
         region.center.latitude = sourceLoc.location.coordinate.latitude;
@@ -405,6 +412,7 @@
         GoLocation *destLoc = self.destinationLocation;
         if (!destLoc) {
             destLoc = [self defaultDestLocation];
+            self.destinationLocation = destLoc;
         }
         mapCell.optionLabel.text = @"Destination";
         region.center.latitude = destLoc.location.coordinate.latitude;
@@ -441,7 +449,7 @@
     
     if (self.isInLongTripMode) {
         
-        if (indexPath.row == 0) {
+        if (indexPath.section == 0) {
             [self presentSearchPlaceViewControllerIsForSourcePlace:YES];
         } else {
             [self presentSearchPlaceViewControllerIsForSourcePlace:NO];
@@ -516,7 +524,7 @@
 
     if (self.isInLongTripMode) {
         location.name = @"Bengaluru";
-        location.location = [[CLLocation alloc] initWithLatitude:12.9667 longitude:77.5667];
+        location.location = [[CLLocation alloc] initWithLatitude:12.9667f longitude:77.5667f];
         
     } else {
         location.location = [[self locationManager] location];
@@ -531,7 +539,7 @@
     
     if (self.isInLongTripMode) {
         location.name = @"Sirsi";
-        location.location = [[CLLocation alloc] initWithLatitude:14.6195 longitude:74.8354];
+        location.location = [[CLLocation alloc] initWithLatitude:14.6195f longitude:74.8354f];
         
     } else {
         location.location = [[self locationManager] location];

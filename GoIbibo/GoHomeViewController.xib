@@ -12,6 +12,8 @@
                 <outlet property="calendarContentView" destination="elR-MW-ApK" id="VtX-mX-OhB"/>
                 <outlet property="calendarContentViewHeight" destination="fZB-DI-iqd" id="b4g-bx-RwE"/>
                 <outlet property="calendarMenuView" destination="4uO-XU-aBn" id="xUa-Ls-WM1"/>
+                <outlet property="findRide" destination="pbq-Qs-uNz" id="Zue-y4-Zhq"/>
+                <outlet property="offerRide" destination="IVV-Ac-Zm6" id="opL-Al-RXX"/>
                 <outlet property="optionTableView" destination="5hG-mU-Vq2" id="s5q-yB-Hmh"/>
                 <outlet property="overlayView" destination="QlB-ed-1wU" id="ABh-r2-RF0"/>
                 <outlet property="typeSelectionSwitch" destination="cx1-8g-8Hl" id="u3l-Fu-sei"/>
