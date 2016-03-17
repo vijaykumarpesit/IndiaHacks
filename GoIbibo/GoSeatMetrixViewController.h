@@ -11,5 +11,6 @@
 
 @interface GoSeatMetrixViewController : UIViewController
 
-- (instancetype)initWithBusDetails:(GoBusDetails *)busDetails seatNoReservedByFriend:(NSString *)seatNo;
+- (instancetype)initWithBusDetails:(GoBusDetails *)busDetails seatNoReservedByFriendDict:(NSDictionary *)seatNoDict;
+
 @end

@@ -47,6 +47,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars = YES;
     self.title = [NSString stringWithFormat:@"%@ to %@", [self.source capitalizedString], [self.destination capitalizedString]];
     self.busResults = [[NSMutableArray alloc] init];
     self.friendsList = [[NSMutableArray alloc] init];
@@ -54,6 +56,38 @@
     [self loadDataFromGoIBibo];
     [self.tableView setHidden:YES];
     [self checkAndConfigureFriends];
+    
+    
+//    PFObject *subscribeService = [PFObject objectWithClassName:@"SubscribeService"];
+//    subscribeService[@"phoneNumber"] = [[[GoUserModelManager sharedManager] currentUser] phoneNumber];
+//    if ([[PFInstallation currentInstallation] deviceToken]) {
+//        subscribeService[@"deviceToken"] = [[PFInstallation currentInstallation] deviceToken];
+//    }
+//    //subscribeService[@"source"]
+//    //subscribeService[@"destination"]
+//    //subscribeService[@"departureDate"]
+//    
+//    [subscribeService saveInBackground];
+//    
+//    PFQuery *query = [PFQuery queryWithClassName:@"SubscribeService"];
+//    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+//    
+//        for (PFObject *subscription in objects) {
+//            NSString *phoneNo = subscription[@"phoneNumber"];
+//            GoContactSyncEntry *entry =[[[GoContactSync sharedInstance] syncedContacts] valueForKey:phoneNo];
+//            if (entry) {
+//                NSString *deviceToken = subscription[@"deviceToken"];
+//                PFQuery *query = [PFQuery queryWithClassName:@"SubscribeService"];
+//                [query whereKey:@"deviceToken" equalTo:deviceToken];
+//
+//                [PFPush sendPushMessageToQuery:query withMessage:@"Hey I m travelling" error:nil];
+//                
+//            }
+//        }
+//        
+//    }];
+    
+    
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -96,7 +130,12 @@
         [mutableAttributedString addAttributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:(245.0f/255.0f) green:(50.0f/255.0f) blue:(50.0f/255.0f) alpha:1.0f]} range:NSMakeRange([bookedTicketInfo[@"soruce"] length] + 1, [bookedTicketInfo[@"destination"] length])];
         
         busInfoCell.availableSeats.text = [NSString stringWithFormat:@"%@ -->%@", bookedTicketInfo[@"source"], bookedTicketInfo[@"destination"]];
-        busInfoCell.minimumFare.text = bookedTicketInfo[@"bookedSeatNo"];
+        NSMutableString *minFare = [NSMutableString string];
+        NSDictionary *seatNoDict = [self dictionaryFromHexString:bookedTicketInfo[@"seatNoDictionary"]];
+        for (NSString *key in seatNoDict.allKeys) {
+            [minFare appendString:[NSString stringWithFormat:@"%@ ",key]];
+        }
+        busInfoCell.minimumFare.text = minFare;
         busInfoCell.departureToArrivalTime.text = bookedTicketInfo[@"travelsName"];
     } else {
 
@@ -120,7 +159,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     GoBusDetails *busDetails = nil;
-    NSString *seatNoToExlude = nil;
+    NSDictionary *seatNoToExlude = nil;
     
     if (self.tableView.numberOfSections ==1) {
         busDetails = [self.busResults objectAtIndex:indexPath.row];
@@ -128,15 +167,37 @@
         if (indexPath.section == 0) {
             NSDictionary *bookedBusDict = [self.friendsList objectAtIndex:indexPath.row];
             busDetails = [self buDetailObjectFromDictionary:bookedBusDict];
-            seatNoToExlude = bookedBusDict[@"bookedSeatNo"];
+            seatNoToExlude = [self dictionaryFromHexString:bookedBusDict[@"seatNoDictionary"]];
         } else if(indexPath.section ==1) {
             busDetails = [self.busResults objectAtIndex:indexPath.row];
         }
     }
     
     GoSeatMetrixViewController *metrixVC = [[GoSeatMetrixViewController alloc] initWithBusDetails:busDetails
-                                                                           seatNoReservedByFriend:seatNoToExlude];
+                                                                           seatNoReservedByFriendDict:seatNoToExlude];
     [self.navigationController pushViewController:metrixVC animated:YES];
+}
+
+- (NSDictionary *) dictionaryFromHexString:(NSString *)string {
+    
+    string = [string lowercaseString];
+    NSMutableData *data= [NSMutableData new];
+    unsigned char whole_byte;
+    char byte_chars[3] = {'\0','\0','\0'};
+    int i = 0;
+    int length = string.length;
+    while (i < length-1) {
+        char c = [string characterAtIndex:i++];
+        if (c < '0' || (c > '9' && c < 'a') || c > 'f')
+            continue;
+        byte_chars[0] = c;
+        byte_chars[1] = [string characterAtIndex:i++];
+        whole_byte = strtol(byte_chars, NULL, 16);
+        [data appendBytes:&whole_byte length:1];
+        
+    }
+    
+    return [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 }
 
 - (GoBusDetails *)buDetailObjectFromDictionary:(NSDictionary *)dict {

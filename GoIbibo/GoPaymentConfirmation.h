@@ -11,5 +11,6 @@
 
 @interface GoPaymentConfirmation : UIViewController
 
-- (instancetype)initWithBusDetails:(GoBusDetails *)busDetails withSeatNo:(NSString *)seatNo;
+- (instancetype)initWithBusDetails:(GoBusDetails *)busDetails withSeatNoDictionary:(NSDictionary *)seatNoDictionary;
+@property (nonatomic, assign) BOOL shouldSend;
 @end

@@ -11,11 +11,13 @@
 #import "GoUser.h"
 #import "GoUserModelManager.h"
 #import "MBProgressHUD.h"
+#import "GoContactSyncEntry.h"
+#import "GoContactSync.h"
 
 
 @interface GoPaymentConfirmation ()<CardIOPaymentViewControllerDelegate>
 @property (nonatomic, strong) GoBusDetails *busDetails;
-@property (nonatomic, strong) NSString *seatNo;
+@property (nonatomic, strong) NSDictionary *seatNoDictionary;
 @property (weak, nonatomic) IBOutlet UIImageView *scanCardImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *netBanking;
 @property (weak, nonatomic) IBOutlet UIImageView *wallets;
@@ -23,18 +25,20 @@
 
 @implementation GoPaymentConfirmation
 
-- (instancetype)initWithBusDetails:(GoBusDetails *)busDetails withSeatNo:(NSString *)seatNo
+- (instancetype)initWithBusDetails:(GoBusDetails *)busDetails withSeatNoDictionary:(NSDictionary *)seatNoDictionary;
  {
     self = [super initWithNibName:@"GoPaymentConfirmation" bundle:nil];
     if (self) {
         self.busDetails = busDetails;
-        self.seatNo = seatNo;
+        self.seatNoDictionary = seatNoDictionary;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars = YES;
     [CardIOUtilities preload];
     [self configureAndAddTapGestureToView:self.scanCardImageView andSelector:@selector(scanCardClicked:)];
     self.scanCardImageView.userInteractionEnabled = YES;
@@ -81,19 +85,45 @@
     // Use the card info...
     [scanViewController dismissViewControllerAnimated:YES completion:nil];
     
-    PFObject *bookedBusDetails = [PFObject objectWithClassName:@"BusBookingDetails"];
-    bookedBusDetails[@"skey"] = self.busDetails.skey;
-    bookedBusDetails[@"bookedUserPhoneNo"] = [[[GoUserModelManager sharedManager] currentUser] phoneNumber];
-    bookedBusDetails[@"bookedSeatNo"] = self.seatNo;
-    bookedBusDetails[@"departureTime"] = self.busDetails.departureTime;
-    bookedBusDetails[@"travelsName"] = self.busDetails.travelsName;
-    bookedBusDetails[@"source"] = self.busDetails.source;
-    bookedBusDetails[@"destination"] = self.busDetails.destination;
-    bookedBusDetails[@"departureDate"] = self.busDetails.departureDate;
+    PFObject *bookedBusDetails = nil;
+    if (self.shouldSend) {
+        bookedBusDetails = [PFObject objectWithClassName:@"BusBookingDetails"];
+        bookedBusDetails[@"skey"] = self.busDetails.skey;
+        bookedBusDetails[@"bookedUserPhoneNo"] = [[[GoUserModelManager sharedManager] currentUser] phoneNumber];
+        NSString *dictString = [self hexStringFromDictionary:self.seatNoDictionary];
+        bookedBusDetails[@"seatNoDictionary"] = dictString;
+        bookedBusDetails[@"departureTime"] = self.busDetails.departureTime;
+        bookedBusDetails[@"travelsName"] = self.busDetails.travelsName;
+        bookedBusDetails[@"source"] = self.busDetails.source;
+        bookedBusDetails[@"destination"] = self.busDetails.destination;
+        bookedBusDetails[@"departureDate"] = self.busDetails.departureDate;
+        
+        //Push notif
+        PFQuery *query = [PFQuery queryWithClassName:@"SubscribeService"];
+        [query whereKey:@"source" equalTo:self.busDetails.source];
+        [query whereKey:@"destination" equalTo:self.busDetails.destination];
+        
+            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        
+                for (PFObject *subscription in objects) {
+                    NSString *phoneNo = subscription[@"phoneNumber"];
+                    GoContactSyncEntry *entry =[[[GoContactSync sharedInstance] syncedContacts] valueForKey:phoneNo];
+                    if (entry) {
+                        NSString *deviceToken = subscription[@"deviceToken"];
+                        PFQuery *query = [PFQuery queryWithClassName:@"SubscribeService"];
+                        [query whereKey:@"deviceToken" equalTo:deviceToken];
+                        [PFPush sendPushMessageToQuery:query withMessage:[NSString stringWithFormat:@"%@ travel is matching with your subscription criteria",[[[GoUserModelManager sharedManager] currentUser] phoneNumber]] error:nil];
+                        
+                    }
+                }
+                
+            }];
+}
     MBProgressHUD *HUDView = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     HUDView.mode = MBProgressHUDModeIndeterminate;
     HUDView.labelText = @"Processing...";
     [bookedBusDetails saveInBackground];
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         MBProgressHUD *HUDViewCompleted = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -105,5 +135,13 @@
             [self.navigationController popToRootViewControllerAnimated:YES];
         });
     });
+}
+
+- (NSString *) hexStringFromDictionary:(NSDictionary *)dict {
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+                                                       options:0
+                                                         error:&error];
+    return [jsonData description];
 }
 @end

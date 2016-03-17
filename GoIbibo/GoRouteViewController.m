@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //Calulate zoom dynamically 
+    //Calulate zoom dynamically
     CLLocationCoordinate2D center = self.sourceLocation.location.coordinate;
     self.mapView.myLocationEnabled = YES;
     self.mapView.camera = [[GMSCameraPosition alloc] initWithTarget:center zoom:13 bearing:0 viewingAngle:0];;

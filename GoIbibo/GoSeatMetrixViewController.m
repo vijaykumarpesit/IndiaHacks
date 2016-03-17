@@ -12,35 +12,45 @@
 #import "GoBusSeatLayout.h"
 #import "GoPaymentConfirmation.h"
 #import "GoSeatSeletionHeaderView.h"
+#import "GoUserDetailsViewController.h"
+#import "CMPopTipView.h"
 
 @interface GoSeatMetrixViewController ()<UICollectionViewDataSource, UICollectionViewDelegate>
 @property (nonatomic, strong) NSMutableArray *seats;
 @property (nonatomic, weak) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, weak) IBOutlet UIView *searchingView;
 @property (nonatomic, strong) GoBusDetails *busDetails;
-@property (nonatomic, strong) NSString *seatNoReservedByFriend;
+@property (nonatomic, strong) NSDictionary *seatNoReservedByFriendDict;
+@property (nonatomic, strong) NSMutableArray *selectedSeats;
+@property (nonatomic, strong) CMPopTipView *popTip;
 
 @end
 
 @implementation GoSeatMetrixViewController
 
-- (instancetype)initWithBusDetails:(GoBusDetails *)busDetails seatNoReservedByFriend:(NSString *)seatNo {
+- (instancetype)initWithBusDetails:(GoBusDetails *)busDetails seatNoReservedByFriendDict:(NSDictionary *)seatNoDict {
 
     self = [super initWithNibName:@"GoSeatMetrixViewController" bundle:nil];
     if (self) {
         self.busDetails = busDetails;
-        self.seatNoReservedByFriend = seatNo;
+        self.seatNoReservedByFriendDict = seatNoDict;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars = YES;
     self.seats = [[NSMutableArray alloc] init];
+    self.selectedSeats = [NSMutableArray array];
     [self.collectionView registerNib:[UINib nibWithNibName:@"GoSeatCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"busSeatCell"];
     [self.collectionView registerNib:[UINib nibWithNibName:@"GoSeatSeletionHeaderView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView"];
     [self loadBusLayoutMetrix];
     [self.collectionView setHidden:YES];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
+    UILongPressGestureRecognizer *longPressRec = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
+    [self.collectionView addGestureRecognizer:longPressRec];
     // Do any additional setup after loading the view.
 }
 
@@ -60,14 +70,18 @@
     cell.backgroundImageView.alpha = 1.0f;
     cell.seatNo.alpha = 1.0f;
     
-    if(layout.seatNo && [layout.seatNo isEqualToString:self.seatNoReservedByFriend]){
+    if(layout.seatNo && [self.seatNoReservedByFriendDict.allKeys containsObject:layout.seatNo]){
         cell.seatNo.text = layout.seatNo;
         cell.backgroundImageView.image = [UIImage imageNamed:@"buddySeat.png"];
-        cell.labelCenterXConstrait.constant += 10.0f;
+        cell.labelCenterXConstrait.constant += (cell.labelCenterXConstrait.constant == 10.0f)? 0.0f : 10.0f;
     } else if (!layout.isSeatAvailable) {
         cell.backgroundImageView.image = [UIImage imageNamed:@"bookedSeat.png"];
         cell.backgroundImageView.alpha = .5f;
         cell.seatNo.alpha = .9f;
+    } else if ([self.selectedSeats containsObject:layout.seatNo]) {
+        cell.selected = YES;
+        cell.backgroundImageView.image = [self tintImage:[UIImage imageNamed:@"availableSeat.png"] withColor:[UIColor colorWithRed:(242.0f/255.0f) green:(245.0f/255.0f) blue:(169.0f/255.0f) alpha:1.0f]];
+        cell.backgroundImageView.alpha = .5f;
     } else {
         cell.backgroundImageView.image = [UIImage imageNamed:@"availableSeat.png"];
     }
@@ -77,7 +91,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     CGRect mainScreenBounds = [[UIScreen mainScreen] bounds];
-    return CGSizeMake(mainScreenBounds.size.width/3 -2,
+    return CGSizeMake(mainScreenBounds.size.width/4 -2,
                       mainScreenBounds.size.width/2.5) ;
 }
 
@@ -96,10 +110,18 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     GoBusSeatLayout *layout = [self.seats objectAtIndex:indexPath.row];
-    if (layout.isSeatAvailable) {
-        GoPaymentConfirmation *paymentVC = [[GoPaymentConfirmation alloc] initWithBusDetails:self.busDetails withSeatNo:layout.seatNo];
-        [self.navigationController pushViewController:paymentVC animated:YES];
+    if ([self.selectedSeats containsObject:layout.seatNo]) {
+        [self.selectedSeats removeObject:layout.seatNo];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [collectionView reloadData];
+        });
+    } else if (layout.isSeatAvailable) {
+        [self.selectedSeats addObject:layout.seatNo];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [collectionView reloadData];
+        });
     } else {
+        [collectionView deselectItemAtIndexPath:indexPath animated:NO];
         NSString *alertControllerTitle = @"Seat Already Booked";
         NSString *alertControllerMessaage = @"Seats which are in orange and blue color is already booked, please select a seat which is in white and black color";
         if (layout.seatNo && [layout.seatNo isEqualToString:@""]) {
@@ -144,6 +166,13 @@
     [operation start];
 }
 
+- (void)doneButtonTapped:(id)sender {
+    GoUserDetailsViewController *userDetailsVC = [[GoUserDetailsViewController alloc] initWithNibName:@"GoUserDetailsViewController" bundle:nil];
+    userDetailsVC.busBookingDetails = self.selectedSeats;
+    userDetailsVC.goBusDetails = self.busDetails;
+    [self.navigationController pushViewController:userDetailsVC animated:YES];
+}
+
 - (void)saveBusSeatLayoutFromResponseObject:(id)responseObject {
     
     NSDictionary *data = [responseObject valueForKey:@"data"];
@@ -165,6 +194,23 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)longPressed:(UILongPressGestureRecognizer *)gestureReco {
+    if (gestureReco.state == UIGestureRecognizerStateBegan) {
+        CGPoint  location = [gestureReco locationInView:gestureReco.view];
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:location];
+        GoBusSeatLayout *layout = [self.seats objectAtIndex:indexPath.row];
+        if(layout.seatNo && [self.seatNoReservedByFriendDict.allKeys containsObject:layout.seatNo]){
+            UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:indexPath];
+            NSString *key = layout.seatNo;
+            NSDictionary *dict =  self.seatNoReservedByFriendDict[key];
+            self.popTip = [[CMPopTipView alloc] initWithMessage:dict[@"Passenger Name"]];
+            [self.popTip presentPointingAtView:cell inView:self.collectionView animated:YES];
+        }
+    } else if (gestureReco.state == UIGestureRecognizerStateEnded) {
+        [self.popTip dismissAnimated:YES];
+    }
+}
+
 NSComparisonResult sortSeatNumber(id seat1, id seat2, void * context) {
     NSString *seatNo1 = seat1[@"SeatName"];
     NSString *seatNo2 = seat2[@"SeatName"];
@@ -175,6 +221,33 @@ NSComparisonResult sortSeatNumber(id seat1, id seat2, void * context) {
         seatNo2 = [NSString stringWithFormat:@"0%@", seatNo2];
     }
     return [seatNo1 caseInsensitiveCompare:seatNo2];
+}
+
+- (UIImage *)tintImage:(UIImage *)image withColor:(UIColor *)color {
+    
+    UIGraphicsBeginImageContextWithOptions(image.size, NO, image.scale);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    [color setFill];
+    
+    CGContextTranslateCTM(context, 0, image.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    
+    // set the blend mode to color burn, and the original image
+    CGContextSetBlendMode(context, kCGBlendModeNormal);
+    CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
+    CGContextDrawImage(context, rect, image.CGImage);
+    
+    CGContextClipToMask(context, rect, image.CGImage);
+    CGContextAddRect(context, rect);
+    CGContextDrawPath(context,kCGPathFill);
+    
+    UIImage *coloredImg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //return the color-burned image
+    return coloredImg;
 }
 
 @end
