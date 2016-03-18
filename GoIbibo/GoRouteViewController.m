@@ -8,8 +8,11 @@
 
 #import "GoRouteViewController.h"
 #import "GoIbibo-swift.h"
+#import "GoTripDetails.h"
+#import <Parse/Parse.h>
+#import "GoUserModelManager.h"
 
-@interface GoRouteViewController ()
+@interface GoRouteViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet IGSwitch *rideServiceSwitch;
 @property (weak, nonatomic) IBOutlet UIPickerView *permissionPicker;
@@ -27,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UIStepper *countStepper;
 @property (assign, nonatomic)  NSUInteger *seatCount;
+@property (nonatomic, assign) NSUInteger selectedPermissionIndex;
+@property (nonatomic, strong) NSMutableArray *geoPoints;
 
 @end
 
@@ -71,7 +76,13 @@
     self.enterFareTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Enter Fare" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
     [self.countLabel setText:@"1"];
     self.countStepper.value = 1.0f;
-
+    
+    self.date = [self dateAfterStrippingDayAndTimeComponentsWithCalendar:[NSCalendar currentCalendar] fromDate:self.date];
+    //NSDate *timeNow = [self dateAfterStrippingDayAndMonthTimeComponentsWithCalendar:[NSCalendar currentCalendar] fromDate:[NSDate date]];
+    
+    self.datePicker.date = self.date;
+    
+    self.geoPoints = [[NSMutableArray alloc] init];
    
 }
 
@@ -195,5 +206,76 @@
     
     [self.countLabel setText:[NSString stringWithFormat:@"%d", (int)value]];
 }
+
+- (IBAction)submitClicked:(id)sender {
+
+    PFObject * tripDetails = [PFObject objectWithClassName:@"GoTripDetails"];
+    
+    tripDetails[@"sourceLattitude"] = @(self.sourceLocation.location.coordinate.latitude);
+    tripDetails[@"sourceLongitude"] = @(self.sourceLocation.location.coordinate.longitude);
+
+    
+    PFGeoPoint *dstGeoPoint = [PFGeoPoint geoPointWithLatitude:self.destinationLocation.location.coordinate.latitude longitude:self.destinationLocation.location.coordinate.longitude];
+    tripDetails[@"destinationLocation"] = dstGeoPoint;
+    
+    tripDetails[@"destinationLattitude"] = @(self.destinationLocation.location.coordinate.latitude);
+    tripDetails[@"sourceLongitude"] = @(self.destinationLocation.location.coordinate.longitude);
+
+    
+    if (self.sourceLocation.name) {
+        tripDetails[@"sourcePlaceName"] = self.sourceLocation.name;
+
+    }
+    if (self.destinationLocation.name) {
+        tripDetails[@"destinationPlaceName"] = self.destinationLocation.name;
+
+    }
+    
+    tripDetails[@"msisdn"] = [[[GoUserModelManager sharedManager] currentUser] phoneNumber];
+    
+    if (self.numberOfSeets.text.length >0) {
+        tripDetails[@"numberOfSeats"] = self.numberOfSeets.text;
+   
+    }
+    if (self.enterFareTextField.text.length >0) {
+        tripDetails[@"fare"] = self.enterFareTextField.text;
+   
+    }
+    
+    if (self.datePicker.date) {
+        tripDetails[@"tripDate"] = self.datePicker.date;
+
+    }
+    
+    tripDetails[@"isInRideMode"] = @(self.isInFindRideMode);
+    tripDetails [@"sharePermissions"] = @(self.selectedPermissionIndex);
+    
+    if (self.geoPoints.count >0) {
+        tripDetails[@"geoPoints"] = self.geoPoints;
+
+    }
+   
+    [tripDetails saveInBackground];
+
+}
+
+
+- (NSDate *)dateAfterStrippingDayAndTimeComponentsWithCalendar:(NSCalendar *)calendar fromDate:(NSDate *)fromDate {
+    NSDateComponents *comps = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit
+                                          fromDate:fromDate];
+    return [calendar dateFromComponents:comps];
+}
+
+
+
+- (NSDate *)dateAfterStrippingDayAndMonthTimeComponentsWithCalendar:(NSCalendar *)calendar fromDate:(NSDate *)fromDate {
+    NSDateComponents *comps = [calendar components:NSHourCalendarUnit | NSMinuteCalendarUnit
+                                          fromDate:fromDate];
+    return [calendar dateFromComponents:comps];
+}
+
+//Apply this logic later
+
+//- (NSDate *)dateAfterAdding
 
 @end

@@ -200,6 +200,7 @@
     GoRouteViewController *routeVC = [[GoRouteViewController alloc] initWithNibName:@"GoRouteViewController" bundle:nil];
     routeVC.sourceLocation = self.sourceLocation;
     routeVC.destinationLocation = self.destinationLocation;
+    routeVC.date = (_dateSelected ? _dateSelected : _todayDate);
     [self.navigationController pushViewController:routeVC animated:YES];
 }
 

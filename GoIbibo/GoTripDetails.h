@@ -19,4 +19,5 @@
 @property (nonatomic, strong) NSNumber *numberOfKg;
 @property (nonatomic, strong) NSNumber *luggageFare;
 @property (nonatomic, strong) NSMutableArray *mapPointsArray;
+@property (nonatomic, strong) NSNumber *isInLongTripMode;
 @end

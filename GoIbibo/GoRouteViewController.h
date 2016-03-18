@@ -15,4 +15,5 @@
 @property (nonatomic, strong) GoLocation *sourceLocation;
 @property (nonatomic, strong) GoLocation *destinationLocation;
 @property (weak, nonatomic) IBOutlet GMSMapView *mapView;
+@property (nonatomic, strong) NSDate *date;
 @end

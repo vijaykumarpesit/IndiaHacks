@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSArray *permissions;
 @property (weak, nonatomic) IBOutlet UIPickerView *permissionPicker;
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (nonatomic, assign) NSUInteger selectedPermissionIndex;
 
 @end
 
@@ -28,8 +29,8 @@
     self.tripDetails = [[NSMutableArray alloc] init];
     self.permissions = @[@"None",@"Phonebook",@"Phonebook+FB",@"Public"];
     
-    [self.selectPermissionLabel setFont:[UIFont fontWithName:@"Helvetica" size:17]];
-    [self.selectTimeLabel setFont:[UIFont fontWithName:@"Helvetica" size:17]];
+    [self.selectPermissionLabel setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+    [self.selectTimeLabel setFont:[UIFont fontWithName:@"Helvetica" size:14]];
     
 //    [self.datePicker setValue:[UIColor whiteColor] forKeyPath:@"textColor"];
 //    SEL selector = NSSelectorFromString(@"setHighlightsToday:");
@@ -94,7 +95,7 @@
 
 - (void)pickerView:(UIPickerView *)pV didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-
+    self.selectedPermissionIndex = row;
 }
 
 
