@@ -20,6 +20,13 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (assign, nonatomic) BOOL isInFindRideMode;
 @property (nonatomic, strong) NSArray *permissions;
+@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (weak, nonatomic) IBOutlet UITextField *enterFareTextField;
+@property (weak, nonatomic) IBOutlet UILabel *countLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UIStepper *countStepper;
+@property (assign, nonatomic)  NSUInteger *seatCount;
 
 @end
 
@@ -27,6 +34,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.isInFindRideMode = YES;
     
     //Calulate zoom dynamically
     CLLocationCoordinate2D center = self.sourceLocation.location.coordinate;
@@ -48,6 +56,23 @@
     self.shareWithFriend.text = @"Share with Friends";
     [self toggleRideService];
     
+    [self.datePicker setValue:[UIColor whiteColor] forKeyPath:@"textColor"];
+    SEL selector = NSSelectorFromString(@"setHighlightsToday:");
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDatePicker instanceMethodSignatureForSelector:selector]];
+    BOOL no = NO;
+    [invocation setSelector:selector];
+    [invocation setArgument:&no atIndex:2];
+    [invocation invokeWithTarget:self.datePicker];
+    
+
+    [self.seatFare setFont:[UIFont fontWithName:@"Helvetica" size:17]];
+    [self.numberOfSeets setFont:[UIFont fontWithName:@"Helvetica" size:17]];
+    [self.shareWithFriend setFont:[UIFont fontWithName:@"Helvetica" size:17]];
+    self.enterFareTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Enter Fare" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    [self.countLabel setText:@"1"];
+    self.countStepper.value = 1.0f;
+
+   
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,12 +137,14 @@
 - (void)toggleRideService {
 
     if (self.isInFindRideMode) {
-     
-        self.numberOfSeets.text  = @"Availble Seats";
+        self.numberOfSeets.text  = @"Available Seats";
         self.seatFare.text = @"Seat Fare";
+        [self.bookButton setTitle:@"Offer Ride" forState:UIControlStateNormal];
     } else {
-        self.numberOfSeets.text  = @"Luggage in KGs";
+        self.numberOfSeets.text  = @"Luggage in KG";
         self.seatFare.text = @"Fare";
+        [self.bookButton setTitle:@"Offer Service" forState:UIControlStateNormal];
+
     }
 }
 
@@ -134,8 +161,9 @@
     if (!tView)
     {
         tView = [[UILabel alloc] init];
-        [tView setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+        [tView setFont:[UIFont fontWithName:@"Helvetica" size:17]];
         [tView setTextAlignment:NSTextAlignmentCenter];
+        [tView setTextColor:[UIColor whiteColor]];
     }
     // Fill the label text here
     tView.text=[self.permissions objectAtIndex:row];
@@ -154,6 +182,18 @@
 
 - (void)pickerView:(UIPickerView *)pV didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+}
+
+- (IBAction)dateChanged:(id)sender {
+
+}
+
+- (IBAction)countValueChanged:(id)sender {
+
+    UIStepper *stepper = (UIStepper *)sender;
+    double value = stepper.value;
+    
+    [self.countLabel setText:[NSString stringWithFormat:@"%d", (int)value]];
 }
 
 @end

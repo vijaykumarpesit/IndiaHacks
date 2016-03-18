@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GoLocation.h"
 
 @interface GoFindRideViewController : UIViewController
+
+@property (nonatomic, strong) GoLocation *sourceLocation;
+@property (nonatomic, strong) GoLocation *destinationLocation;
 
 @end

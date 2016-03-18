@@ -40,6 +40,7 @@
     
     self.seachBar.delegate = self;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(rightBarButtonItemPressed:)];
+    
 }
 
 - (void)addLocationWithName:(NSString *)name lattitude:(CGFloat)lattitude longitude:(CGFloat)longitude {

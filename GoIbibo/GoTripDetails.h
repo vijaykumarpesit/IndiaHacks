@@ -18,5 +18,5 @@
 @property (nonatomic, strong) NSNumber *numberOfSeats;
 @property (nonatomic, strong) NSNumber *numberOfKg;
 @property (nonatomic, strong) NSNumber *luggageFare;
-
+@property (nonatomic, strong) NSMutableArray *mapPointsArray;
 @end

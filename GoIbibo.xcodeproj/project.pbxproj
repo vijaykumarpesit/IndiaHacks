@@ -38,6 +38,7 @@
 		B10ECC971BB33E7900B19D66 /* GoSeatCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B10ECC951BB33E7900B19D66 /* GoSeatCollectionViewCell.m */; };
 		B10ECC981BB33E7900B19D66 /* GoSeatCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B10ECC961BB33E7900B19D66 /* GoSeatCollectionViewCell.xib */; };
 		B10ECC9B1BB342F800B19D66 /* GoBusSeatLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B10ECC9A1BB342F800B19D66 /* GoBusSeatLayout.m */; };
+		B12507371C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.m in Sources */ = {isa = PBXBuildFile; fileRef = B12507361C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.m */; };
 		B126EA9A1C6F0934002D14F0 /* IGSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B126EA991C6F0934002D14F0 /* IGSwitch.swift */; };
 		B126EA9E1C6F16E6002D14F0 /* GoMapCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B126EA9C1C6F16E6002D14F0 /* GoMapCell.m */; };
 		B126EA9F1C6F16E6002D14F0 /* GoMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B126EA9D1C6F16E6002D14F0 /* GoMapCell.xib */; };
@@ -140,6 +141,8 @@
 		B10ECC961BB33E7900B19D66 /* GoSeatCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoSeatCollectionViewCell.xib; sourceTree = "<group>"; };
 		B10ECC991BB342F800B19D66 /* GoBusSeatLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoBusSeatLayout.h; sourceTree = "<group>"; };
 		B10ECC9A1BB342F800B19D66 /* GoBusSeatLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoBusSeatLayout.m; sourceTree = "<group>"; };
+		B12507351C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+WhiteUIDatePickerLabels.h"; sourceTree = "<group>"; };
+		B12507361C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+WhiteUIDatePickerLabels.m"; sourceTree = "<group>"; };
 		B126EA981C6F0934002D14F0 /* GoIbibo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GoIbibo-Bridging-Header.h"; sourceTree = "<group>"; };
 		B126EA991C6F0934002D14F0 /* IGSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGSwitch.swift; sourceTree = "<group>"; };
 		B126EA9B1C6F16E6002D14F0 /* GoMapCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoMapCell.h; sourceTree = "<group>"; };
@@ -328,6 +331,8 @@
 				B126EA9B1C6F16E6002D14F0 /* GoMapCell.h */,
 				B126EA9C1C6F16E6002D14F0 /* GoMapCell.m */,
 				B126EA9D1C6F16E6002D14F0 /* GoMapCell.xib */,
+				B12507351C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.h */,
+				B12507361C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -652,6 +657,7 @@
 				546DE9861BB6ACEE005E5A8F /* MBProgressHUD.m in Sources */,
 				B1EDDED11BB10A4100518E0C /* GoHomeViewController.m in Sources */,
 				B10ECC9B1BB342F800B19D66 /* GoBusSeatLayout.m in Sources */,
+				B12507371C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.m in Sources */,
 				54A550D51BB148480000561B /* GoSettingsViewController.m in Sources */,
 				B126EA9A1C6F0934002D14F0 /* IGSwitch.swift in Sources */,
 				B132D5791C9BDB0600CE514B /* GoFindRideCell.m in Sources */,
