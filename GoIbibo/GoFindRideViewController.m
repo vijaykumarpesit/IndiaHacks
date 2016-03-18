@@ -146,33 +146,40 @@
         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
             
             for (PFObject *object in objects) {
-                NSArray *points = object[@"pointsArray"];
-                if ([self isMatchingPointsFound:points]) {
-                    
-                    GoTripDetails *details = [[GoTripDetails alloc] init];
-                    details.seatFare =  object[@"fare"];
-                    GoLocation *fromLocation = [[GoLocation alloc] init];
-                    CGFloat srcLatitude = [object[@"sourceLattitude"] floatValue];
-                    CGFloat srcLongitude = [object[@"sourceLongitude"] floatValue];
-                    fromLocation.location = [[CLLocation alloc] initWithLatitude:srcLatitude longitude:srcLongitude];
-                    fromLocation.name = object[@"sourcePlaceName"];
-                    
-                    GoLocation *toLocation = [[GoLocation alloc] init];
-                    CGFloat dstLatitude = [object[@"destinationLattitude"] floatValue];
-                    CGFloat dstLongitude = [object[@"destinationLongitude"] floatValue];
-                    toLocation.location = [[CLLocation alloc] initWithLatitude:dstLatitude longitude:dstLongitude];
-                    toLocation.name = object[@"destinationPlaceName"];
-                    
-                    details.fromLocation = fromLocation;
-                    details.toLocation = toLocation;
-                    details.driverMSISDN = object[@"msisdn"];
-                    details.numberOfSeats = object[@"numberOfSeats"];
-                    details.timestamp = object[@"tripDate"];
-                    
-                    [self.tripDetails addObject:details];
+                NSNumber *sharePerm = object[@"sharePermissions"];
+                NSString *msisdn = object[@"msisdn"];
+                if (sharePerm.integerValue > 0 && ![msisdn isEqualToString:myNumber]) {
                     
                     
                     
+                    NSArray *points = object[@"pointsArray"];
+                    if ([self isMatchingPointsFound:points]) {
+                        
+                        GoTripDetails *details = [[GoTripDetails alloc] init];
+                        details.seatFare =  object[@"fare"];
+                        GoLocation *fromLocation = [[GoLocation alloc] init];
+                        CGFloat srcLatitude = [object[@"sourceLattitude"] floatValue];
+                        CGFloat srcLongitude = [object[@"sourceLongitude"] floatValue];
+                        fromLocation.location = [[CLLocation alloc] initWithLatitude:srcLatitude longitude:srcLongitude];
+                        fromLocation.name = object[@"sourcePlaceName"];
+                        
+                        GoLocation *toLocation = [[GoLocation alloc] init];
+                        CGFloat dstLatitude = [object[@"destinationLattitude"] floatValue];
+                        CGFloat dstLongitude = [object[@"destinationLongitude"] floatValue];
+                        toLocation.location = [[CLLocation alloc] initWithLatitude:dstLatitude longitude:dstLongitude];
+                        toLocation.name = object[@"destinationPlaceName"];
+                        
+                        details.fromLocation = fromLocation;
+                        details.toLocation = toLocation;
+                        details.driverMSISDN = object[@"msisdn"];
+                        details.numberOfSeats = object[@"numberOfSeats"];
+                        details.timestamp = object[@"tripDate"];
+                        
+                        [self.tripDetails addObject:details];
+                        
+                        
+                        
+                    }
                 }
             }
             
