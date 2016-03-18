@@ -49,6 +49,11 @@
 		B132D56C1C9AF39100CE514B /* GoUserDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B132D5681C9AF39100CE514B /* GoUserDetailsViewController.m */; };
 		B132D56D1C9AF39100CE514B /* GoUserDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B132D5691C9AF39100CE514B /* GoUserDetailsViewController.xib */; };
 		B132D5701C9AF3AD00CE514B /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = B132D56F1C9AF3AD00CE514B /* CMPopTipView.m */; };
+		B132D5741C9BDABB00CE514B /* GoFindRideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B132D5721C9BDABB00CE514B /* GoFindRideViewController.m */; };
+		B132D5751C9BDABB00CE514B /* GoFindRideViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B132D5731C9BDABB00CE514B /* GoFindRideViewController.xib */; };
+		B132D5791C9BDB0600CE514B /* GoFindRideCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B132D5771C9BDB0600CE514B /* GoFindRideCell.m */; };
+		B132D57A1C9BDB0600CE514B /* GoFindRideCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B132D5781C9BDB0600CE514B /* GoFindRideCell.xib */; };
+		B132D57D1C9BDFBA00CE514B /* GoTripDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = B132D57C1C9BDFBA00CE514B /* GoTripDetails.m */; };
 		B13614991C9A6E9900A2BB1B /* equi-map.png in Resources */ = {isa = PBXBuildFile; fileRef = B13614961C9A6E9900A2BB1B /* equi-map.png */; };
 		B136149A1C9A6E9900A2BB1B /* equi-map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B13614971C9A6E9900A2BB1B /* equi-map@2x.png */; };
 		B136149B1C9A6E9900A2BB1B /* locations.json in Resources */ = {isa = PBXBuildFile; fileRef = B13614981C9A6E9900A2BB1B /* locations.json */; };
@@ -152,6 +157,14 @@
 		B132D5691C9AF39100CE514B /* GoUserDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoUserDetailsViewController.xib; sourceTree = "<group>"; };
 		B132D56E1C9AF3AD00CE514B /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
 		B132D56F1C9AF3AD00CE514B /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
+		B132D5711C9BDABB00CE514B /* GoFindRideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoFindRideViewController.h; sourceTree = "<group>"; };
+		B132D5721C9BDABB00CE514B /* GoFindRideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoFindRideViewController.m; sourceTree = "<group>"; };
+		B132D5731C9BDABB00CE514B /* GoFindRideViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoFindRideViewController.xib; sourceTree = "<group>"; };
+		B132D5761C9BDB0600CE514B /* GoFindRideCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoFindRideCell.h; sourceTree = "<group>"; };
+		B132D5771C9BDB0600CE514B /* GoFindRideCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoFindRideCell.m; sourceTree = "<group>"; };
+		B132D5781C9BDB0600CE514B /* GoFindRideCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GoFindRideCell.xib; sourceTree = "<group>"; };
+		B132D57B1C9BDFBA00CE514B /* GoTripDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoTripDetails.h; sourceTree = "<group>"; };
+		B132D57C1C9BDFBA00CE514B /* GoTripDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoTripDetails.m; sourceTree = "<group>"; };
 		B13614961C9A6E9900A2BB1B /* equi-map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "equi-map.png"; path = "../equi-map.png"; sourceTree = "<group>"; };
 		B13614971C9A6E9900A2BB1B /* equi-map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "equi-map@2x.png"; path = "../equi-map@2x.png"; sourceTree = "<group>"; };
 		B13614981C9A6E9900A2BB1B /* locations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = locations.json; path = ../locations.json; sourceTree = "<group>"; };
@@ -292,6 +305,8 @@
 				B151F67A1BB31E360017D908 /* GoBookedBusDetail.m */,
 				B10ECC991BB342F800B19D66 /* GoBusSeatLayout.h */,
 				B10ECC9A1BB342F800B19D66 /* GoBusSeatLayout.m */,
+				B132D57B1C9BDFBA00CE514B /* GoTripDetails.h */,
+				B132D57C1C9BDFBA00CE514B /* GoTripDetails.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -358,6 +373,12 @@
 				B132D55F1C9ADCC500CE514B /* GoRouteViewController.h */,
 				B132D5601C9ADCC500CE514B /* GoRouteViewController.m */,
 				B132D5611C9ADCC500CE514B /* GoRouteViewController.xib */,
+				B132D5711C9BDABB00CE514B /* GoFindRideViewController.h */,
+				B132D5721C9BDABB00CE514B /* GoFindRideViewController.m */,
+				B132D5731C9BDABB00CE514B /* GoFindRideViewController.xib */,
+				B132D5761C9BDB0600CE514B /* GoFindRideCell.h */,
+				B132D5771C9BDB0600CE514B /* GoFindRideCell.m */,
+				B132D5781C9BDB0600CE514B /* GoFindRideCell.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -527,6 +548,8 @@
 				54A550FA1BB160370000561B /* IconSettings@2x.png in Resources */,
 				B1EDDED91BB10A4100518E0C /* LaunchScreen.storyboard in Resources */,
 				547A06391BB41C7F0079F1CC /* Teal Collaboration Icon.png in Resources */,
+				B132D5751C9BDABB00CE514B /* GoFindRideViewController.xib in Resources */,
+				B132D57A1C9BDB0600CE514B /* GoFindRideCell.xib in Resources */,
 				B10ECC981BB33E7900B19D66 /* GoSeatCollectionViewCell.xib in Resources */,
 				54A550CB1BB138A60000561B /* left-side-bar-hamburger@2x.png in Resources */,
 				B1EE44C11BB6F77100B47C8F /* IMG_1042.PNG in Resources */,
@@ -631,6 +654,7 @@
 				B10ECC9B1BB342F800B19D66 /* GoBusSeatLayout.m in Sources */,
 				54A550D51BB148480000561B /* GoSettingsViewController.m in Sources */,
 				B126EA9A1C6F0934002D14F0 /* IGSwitch.swift in Sources */,
+				B132D5791C9BDB0600CE514B /* GoFindRideCell.m in Sources */,
 				B151F6841BB3353B0017D908 /* GoSeatMetrixViewController.m in Sources */,
 				54A550EC1BB154060000561B /* GoSettingsOption.m in Sources */,
 				B1EA1FEB1BB2F00600A6B580 /* GoUser.m in Sources */,
@@ -638,6 +662,7 @@
 				B191BED31BB3501500838839 /* GoPaymentConfirmation.m in Sources */,
 				B126EA9E1C6F16E6002D14F0 /* GoMapCell.m in Sources */,
 				B132D56A1C9AF39100CE514B /* GoUserDetailsCell.m in Sources */,
+				B132D5741C9BDABB00CE514B /* GoFindRideViewController.m in Sources */,
 				B10ECC971BB33E7900B19D66 /* GoSeatCollectionViewCell.m in Sources */,
 				B1EDDECB1BB10A4100518E0C /* main.m in Sources */,
 				54C4B2031BB3C09500110592 /* GoSearchPlaceViewController.m in Sources */,
@@ -648,6 +673,7 @@
 				B10D989E1BB24E97005D74D1 /* GoBusListViewController.m in Sources */,
 				B1EDDEE81BB10C6400518E0C /* RESideMenu.m in Sources */,
 				B1EDDEE71BB10C6400518E0C /* RECommonFunctions.m in Sources */,
+				B132D57D1C9BDFBA00CE514B /* GoTripDetails.m in Sources */,
 				B1EA1FC91BB276EB00A6B580 /* GoBusDetails.m in Sources */,
 				B132D56C1C9AF39100CE514B /* GoUserDetailsViewController.m in Sources */,
 				B132D5701C9AF3AD00CE514B /* CMPopTipView.m in Sources */,
