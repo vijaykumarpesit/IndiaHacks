@@ -435,7 +435,8 @@
         [point setCoordinate:(theLocation.coordinate)];
         [mapCell setLocation:theLocation];
         mapCell.optionValueLabel.text = destLoc.name;
-        
+        mapCell.optionValueLabel.textColor = [UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.8
+                                              ];
         
     }
     
