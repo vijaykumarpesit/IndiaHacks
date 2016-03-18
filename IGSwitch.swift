@@ -151,7 +151,7 @@ class IGSwitch: UIControl {
   private func layoutSlider() {
     layoutSliderView(selectedIndex)
     layoutBackgroundLabels()
-    layoutFrontLabels()
+    layoutFrontLabels(selectedIndex)
   }
   
   private func layoutSliderView(index: Int) {
@@ -165,12 +165,17 @@ class IGSwitch: UIControl {
     }
   }
   
-  private func layoutFrontLabels() {
+    private func layoutFrontLabels(index: Int) {
     let offsetX = sliderView.frame.origin.x - sliderInset
     for index in 0...1 {
       let label = frontLabels[index]
       label.frame = CGRect(x: CGFloat(index) * sliderWidth - sliderInset - offsetX, y: -sliderInset, width: sliderWidth, height: bounds.height)
     }
+        var backLabel = backgroundLabels[index]
+        backLabel.alpha = 0.0
+        let requiredIndex = abs(index-1)
+        backLabel = backgroundLabels[requiredIndex]
+        backLabel.alpha = 1.0
   }
   
   // MARK: Set Selection
@@ -193,7 +198,7 @@ class IGSwitch: UIControl {
   
   private func updateSlider(index: Int) {
     layoutSliderView(index)
-    layoutFrontLabels()
+    layoutFrontLabels(index)
   }
   
   private func updateSelectedIndex(index: Int) {
@@ -253,7 +258,7 @@ class IGSwitch: UIControl {
       sliderView.frame.origin.x = maxPos
     }
     
-    layoutFrontLabels()
+    layoutFrontLabels(selectedIndex)
   }
     
   private func panGestureRecognizerFinished(recognizer: UIPanGestureRecognizer) {

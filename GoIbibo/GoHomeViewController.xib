@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15E49a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -127,7 +127,7 @@
                             <rect key="frame" x="20" y="10" width="335" height="40"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cx1-8g-8Hl" customClass="IGSwitch" customModule="GoIbibo" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="335" height="40"/>
+                                    <rect key="frame" x="8" y="0.0" width="319" height="40"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="170" id="FzB-mQ-QLQ"/>
@@ -148,8 +148,8 @@
                                 <constraint firstAttribute="height" constant="40" id="7GS-CA-Dfo"/>
                                 <constraint firstItem="cx1-8g-8Hl" firstAttribute="top" secondItem="C1c-Na-Kot" secondAttribute="top" id="IqF-Hy-ikF"/>
                                 <constraint firstAttribute="bottom" secondItem="cx1-8g-8Hl" secondAttribute="bottom" id="dXa-UN-QxB"/>
-                                <constraint firstAttribute="trailing" secondItem="cx1-8g-8Hl" secondAttribute="trailing" id="n0B-xe-Ne0"/>
-                                <constraint firstItem="cx1-8g-8Hl" firstAttribute="leading" secondItem="C1c-Na-Kot" secondAttribute="leading" id="obh-iX-E8P"/>
+                                <constraint firstAttribute="trailing" secondItem="cx1-8g-8Hl" secondAttribute="trailing" constant="8" id="n0B-xe-Ne0"/>
+                                <constraint firstItem="cx1-8g-8Hl" firstAttribute="leading" secondItem="C1c-Na-Kot" secondAttribute="leading" constant="8" id="obh-iX-E8P"/>
                             </constraints>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" style="plain" separatorStyle="none" rowHeight="150" sectionHeaderHeight="10" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="5hG-mU-Vq2">

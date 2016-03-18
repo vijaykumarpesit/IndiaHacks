@@ -92,9 +92,9 @@
     
     self.typeSelectionSwitch.titleLeft = @"Long Journey";
     self.typeSelectionSwitch.titleRight = @"Short Journey";
-    self.typeSelectionSwitch.cornerRadius = 0.0f;
+    self.typeSelectionSwitch.cornerRadius = 5.0f;
     self.typeSelectionSwitch.font = [UIFont fontWithName:@"HelveticaNeue" size:18];
-    self.typeSelectionSwitch.sliderColor = [UIColor colorWithRed:100/255.0 green:177/255.0 blue:185/255.0 alpha:1.0];
+    self.typeSelectionSwitch.sliderColor = [UIColor colorWithRed:100/255.0 green:177/255.0 blue:185/255.0 alpha:0.7];
     self.typeSelectionSwitch.textColorFront = [UIColor whiteColor];
     self.typeSelectionSwitch.textColorBack = [UIColor whiteColor];
     [self.typeSelectionSwitch addTarget:self action:@selector(journeyTypeChanged:) forControlEvents:UIControlEventValueChanged];
@@ -435,7 +435,7 @@
         [point setCoordinate:(theLocation.coordinate)];
         [mapCell setLocation:theLocation];
         mapCell.optionValueLabel.text = destLoc.name;
-        mapCell.optionValueLabel.textColor = [UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.8
+        mapCell.optionValueLabel.textColor = [UIColor colorWithRed:1.0 green:0.55 blue:0.4 alpha:1.0
                                               ];
         
     }
