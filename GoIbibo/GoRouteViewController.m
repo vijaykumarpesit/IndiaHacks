@@ -7,8 +7,19 @@
 //
 
 #import "GoRouteViewController.h"
+#import "GoIbibo-swift.h"
 
 @interface GoRouteViewController ()
+
+@property (weak, nonatomic) IBOutlet IGSwitch *rideServiceSwitch;
+@property (weak, nonatomic) IBOutlet UIPickerView *permissionPicker;
+@property (weak, nonatomic) IBOutlet UIButton *bookButton;
+@property (weak, nonatomic) IBOutlet UILabel *shareWithFriend;
+@property (weak, nonatomic) IBOutlet UILabel *seatFare;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfSeets;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (assign, nonatomic) BOOL isInFindRideMode;
+@property (nonatomic, strong) NSArray *permissions;
 
 @end
 
@@ -22,6 +33,21 @@
     self.mapView.myLocationEnabled = YES;
     self.mapView.camera = [[GMSCameraPosition alloc] initWithTarget:center zoom:13 bearing:0 viewingAngle:0];;
     [self drawRoute];
+    
+    
+    self.rideServiceSwitch.titleLeft = @"Ride";
+    self.rideServiceSwitch.titleRight = @"Service";
+    self.rideServiceSwitch.cornerRadius = 0.0f;
+    self.rideServiceSwitch.font = [UIFont fontWithName:@"HelveticaNeue" size:18];
+    self.rideServiceSwitch.sliderColor = [UIColor colorWithRed:100/255.0 green:177/255.0 blue:185/255.0 alpha:1.0];
+    self.rideServiceSwitch.textColorFront = [UIColor whiteColor];
+    self.rideServiceSwitch.textColorBack = [UIColor whiteColor];
+    
+    self.permissions = @[@"None",@"Phonebook",@"Phonebook+FB",@"Public"];
+    
+    self.shareWithFriend.text = @"Share with Friends";
+    [self toggleRideService];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -77,5 +103,57 @@
     [fetchDirectionsTask resume];
 }
 
+- (IBAction)rideSerivceToggle:(id)sender {
+
+    self.isInFindRideMode = (self.rideServiceSwitch.selectedIndex == 0);
+    [self toggleRideService];
+}
+
+- (void)toggleRideService {
+
+    if (self.isInFindRideMode) {
+     
+        self.numberOfSeets.text  = @"Availble Seats";
+        self.seatFare.text = @"Seat Fare";
+    } else {
+        self.numberOfSeets.text  = @"Luggage in KGs";
+        self.seatFare.text = @"Fare";
+    }
+}
+
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component;
+{
+    return self.permissions.count;
+}
+
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel* tView = (UILabel*)view;
+    if (!tView)
+    {
+        tView = [[UILabel alloc] init];
+        [tView setFont:[UIFont fontWithName:@"Helvetica" size:14]];
+        [tView setTextAlignment:NSTextAlignmentCenter];
+    }
+    // Fill the label text here
+    tView.text=[self.permissions objectAtIndex:row];
+    return tView;
+}
+
+
+- (CGSize)rowSizeForComponent:(NSInteger)component {
+    
+    return CGSizeMake(self.permissionPicker.bounds.size.width, 60.0f);
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (void)pickerView:(UIPickerView *)pV didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+}
 
 @end
