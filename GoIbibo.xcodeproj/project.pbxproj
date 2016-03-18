@@ -39,6 +39,8 @@
 		B10ECC981BB33E7900B19D66 /* GoSeatCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B10ECC961BB33E7900B19D66 /* GoSeatCollectionViewCell.xib */; };
 		B10ECC9B1BB342F800B19D66 /* GoBusSeatLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B10ECC9A1BB342F800B19D66 /* GoBusSeatLayout.m */; };
 		B12507371C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.m in Sources */ = {isa = PBXBuildFile; fileRef = B12507361C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.m */; };
+		B125073A1C9C816E00137FE0 /* dp.png in Resources */ = {isa = PBXBuildFile; fileRef = B12507391C9C816E00137FE0 /* dp.png */; };
+		B125073C1C9C82BA00137FE0 /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = B125073B1C9C82BA00137FE0 /* default.png */; };
 		B126EA9A1C6F0934002D14F0 /* IGSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B126EA991C6F0934002D14F0 /* IGSwitch.swift */; };
 		B126EA9E1C6F16E6002D14F0 /* GoMapCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B126EA9C1C6F16E6002D14F0 /* GoMapCell.m */; };
 		B126EA9F1C6F16E6002D14F0 /* GoMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B126EA9D1C6F16E6002D14F0 /* GoMapCell.xib */; };
@@ -143,6 +145,8 @@
 		B10ECC9A1BB342F800B19D66 /* GoBusSeatLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoBusSeatLayout.m; sourceTree = "<group>"; };
 		B12507351C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+WhiteUIDatePickerLabels.h"; sourceTree = "<group>"; };
 		B12507361C9C2CD100137FE0 /* UILabel+WhiteUIDatePickerLabels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+WhiteUIDatePickerLabels.m"; sourceTree = "<group>"; };
+		B12507391C9C816E00137FE0 /* dp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dp.png; sourceTree = "<group>"; };
+		B125073B1C9C82BA00137FE0 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
 		B126EA981C6F0934002D14F0 /* GoIbibo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GoIbibo-Bridging-Header.h"; sourceTree = "<group>"; };
 		B126EA991C6F0934002D14F0 /* IGSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGSwitch.swift; sourceTree = "<group>"; };
 		B126EA9B1C6F16E6002D14F0 /* GoMapCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoMapCell.h; sourceTree = "<group>"; };
@@ -427,6 +431,8 @@
 				B1EDDEE01BB10C5200518E0C /* Side Menu */,
 				B1EDDED51BB10A4100518E0C /* Assets.xcassets */,
 				B1EDDED71BB10A4100518E0C /* LaunchScreen.storyboard */,
+				B125073B1C9C82BA00137FE0 /* default.png */,
+				B12507391C9C816E00137FE0 /* dp.png */,
 				B1EDDEDA1BB10A4100518E0C /* Info.plist */,
 				B13614961C9A6E9900A2BB1B /* equi-map.png */,
 				B13614971C9A6E9900A2BB1B /* equi-map@2x.png */,
@@ -563,6 +569,7 @@
 				B1EDDEEB1BB10D9A00518E0C /* GoHomeViewController.xib in Resources */,
 				B126EA9F1C6F16E6002D14F0 /* GoMapCell.xib in Resources */,
 				B132D56D1C9AF39100CE514B /* GoUserDetailsViewController.xib in Resources */,
+				B125073C1C9C82BA00137FE0 /* default.png in Resources */,
 				B1EA1FCE1BB2AA9E00A6B580 /* GoBusInfoCell.xib in Resources */,
 				B136149B1C9A6E9900A2BB1B /* locations.json in Resources */,
 				B10D989F1BB24E97005D74D1 /* GoBusListViewController.xib in Resources */,
@@ -570,6 +577,7 @@
 				B1EDDED61BB10A4100518E0C /* Assets.xcassets in Resources */,
 				547A05D81BB3EF3F0079F1CC /* background.png in Resources */,
 				B132D56B1C9AF39100CE514B /* GoUserDetailsCell.xib in Resources */,
+				B125073A1C9C816E00137FE0 /* dp.png in Resources */,
 				5458A8E81BB686AA008D9ED5 /* buddySeat.png in Resources */,
 				54C4B2041BB3C09500110592 /* GoSearchPlaceViewController.xib in Resources */,
 				54A550CC1BB138A60000561B /* left-side-bar-hamburger@3x.png in Resources */,

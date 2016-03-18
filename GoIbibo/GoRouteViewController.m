@@ -32,7 +32,10 @@
 @property (weak, nonatomic) IBOutlet UIStepper *countStepper;
 @property (assign, nonatomic)  NSUInteger *seatCount;
 @property (nonatomic, assign) NSUInteger selectedPermissionIndex;
-@property (nonatomic, strong) NSMutableArray *geoPoints;
+@property (nonatomic, strong) NSMutableArray *lattitudeArray;
+@property (nonatomic, strong) NSMutableArray *longitudeArray;
+@property (nonatomic, strong) NSMutableArray *pointsArray;
+
 
 @end
 
@@ -83,7 +86,9 @@
     
     self.datePicker.date = self.date;
     
-    self.geoPoints = [[NSMutableArray alloc] init];
+    self.lattitudeArray = [[NSMutableArray alloc] init];
+    self.longitudeArray = [[NSMutableArray alloc] init];
+    self.pointsArray = [[NSMutableArray alloc] init];
    
 }
 
@@ -129,6 +134,18 @@
                                                              NSDictionary *routeOverviewPolyline = [routeDict objectForKey:@"overview_polyline"];
                                                              NSString *points = [routeOverviewPolyline objectForKey:@"points"];
                                                              GMSPath *path = [GMSPath pathFromEncodedPath:points];
+                                                             
+                                                             for (int i =0; i < [path count]; i++) {
+                                                                 
+                                                                 CLLocationCoordinate2D coordiante = [path coordinateAtIndex:i];
+                                                                 //[self.lattitudeArray addObject:@(coordiante.latitude)];
+                                                                 //[self.longitudeArray addObject:@(coordiante.longitude)];
+                                                                 PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLatitude:coordiante.latitude longitude:coordiante.longitude];
+                                                                 [self.pointsArray addObject:geoPoint];
+
+                                                                 NSLog(@"%f , %f", coordiante.latitude,coordiante.longitude);
+                                                             }
+                                                             
                                                              polyline = [GMSPolyline polylineWithPath:path];
                                                          }
                                                          
@@ -216,11 +233,8 @@
     tripDetails[@"sourceLongitude"] = @(self.sourceLocation.location.coordinate.longitude);
 
     
-    PFGeoPoint *dstGeoPoint = [PFGeoPoint geoPointWithLatitude:self.destinationLocation.location.coordinate.latitude longitude:self.destinationLocation.location.coordinate.longitude];
-    tripDetails[@"destinationLocation"] = dstGeoPoint;
-    
     tripDetails[@"destinationLattitude"] = @(self.destinationLocation.location.coordinate.latitude);
-    tripDetails[@"sourceLongitude"] = @(self.destinationLocation.location.coordinate.longitude);
+    tripDetails[@"destinationLongitude"] = @(self.destinationLocation.location.coordinate.longitude);
 
     
     if (self.sourceLocation.name) {
@@ -232,7 +246,7 @@
 
     }
     
-    tripDetails[@"msisdn"] = [[[GoUserModelManager sharedManager] currentUser] phoneNumber];
+    tripDetails[@"msisdn"] = @"996499396";//[[[GoUserModelManager sharedManager] currentUser] phoneNumber];
     
     if (self.numberOfSeets.text.length >0) {
         tripDetails[@"numberOfSeats"] = self.numberOfSeets.text;
@@ -251,11 +265,22 @@
     tripDetails[@"isInRideMode"] = @(self.isInFindRideMode);
     tripDetails [@"sharePermissions"] = @(self.selectedPermissionIndex);
     
-    if (self.geoPoints.count >0) {
-        tripDetails[@"geoPoints"] = self.geoPoints;
-
-    }
+//    if (self.lattitudeArray.count >0) {
+//        tripDetails[@"lattitudeArray"] = self.lattitudeArray;
+//
+//    }
+//    
+//    if (self.longitudeArray.count >0) {
+//        tripDetails[@"longitudeArray"] = self.lattitudeArray;
+//        
+//    }
+//    
    
+    if (self.pointsArray.count >0) {
+        tripDetails [@"pointsArray"] = self.pointsArray;
+  
+    }
+    
     [tripDetails saveInBackground];
     
     MBProgressHUD *HUDView = [MBProgressHUD showHUDAddedTo:self.view animated:YES];

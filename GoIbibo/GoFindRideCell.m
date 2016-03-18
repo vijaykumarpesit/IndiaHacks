@@ -10,16 +10,18 @@
 
 @interface GoFindRideCell ()
 
-@property (weak, nonatomic) IBOutlet UILabel *fromToLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
-@property (weak, nonatomic) IBOutlet UILabel *timeLable;
-@property (weak, nonatomic) IBOutlet UILabel *fareLabel;
+
 @end
 
 @implementation GoFindRideCell
 
 - (void)awakeFromNib {
-    // Initialization code
+    
+    [self.fareLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:14]];
+    [self.fromToLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:14]];
+    [self.timeLable setFont:[UIFont fontWithName:@"HelveticaNeue" size:14]];
+    [self.nameLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:14]];
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

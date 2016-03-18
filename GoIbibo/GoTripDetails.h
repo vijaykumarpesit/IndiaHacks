@@ -13,7 +13,7 @@
 @property (nonatomic, strong) GoLocation *fromLocation;
 @property (nonatomic, strong) GoLocation *toLocation;
 @property (nonatomic, strong) NSDate *timestamp;
-@property (nonatomic, strong) NSNumber *seatFare;
+@property (nonatomic, strong) NSString *seatFare;
 @property (nonatomic, strong) NSString *driverMSISDN;
 @property (nonatomic, strong) NSNumber *numberOfSeats;
 @property (nonatomic, strong) NSNumber *numberOfKg;
