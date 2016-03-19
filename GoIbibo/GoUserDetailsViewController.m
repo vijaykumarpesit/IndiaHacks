@@ -92,8 +92,8 @@
     cell.textField.tag = 100 * indexPath.section + indexPath.row;
     cell.textField.text = [[self.userDetailsDictionary valueForKey:[self.busBookingDetails objectAtIndex:indexPath.section]] valueForKey:self.userDetialsInfo[indexPath.row]];
     if (indexPath.row == 2) {
-        cell.textField.userInteractionEnabled = NO;
-        cell.textField.delegate = nil;
+        //cell.textField.userInteractionEnabled = NO;
+        //cell.textField.delegate = nil;
     } else {
         cell.textField.delegate = self;
     }
@@ -155,4 +155,10 @@
 {
     self.canShareWithFriends = (row !=0);
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
 @end

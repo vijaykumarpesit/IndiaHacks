@@ -13,6 +13,7 @@
 #import "GoFindRideCell.h"
 #import "GoContactSync.h"
 #import "GoContactSyncEntry.h"
+#import "MBProgressHUD.h"
 
 @import GoogleMaps;
 
@@ -80,17 +81,43 @@
     
     GoFindRideCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     GoTripDetails *details = [self.tripDetails objectAtIndex:indexPath.row];
-    cell.fareLabel.text = [NSString stringWithFormat:@"%@ rupees",details.seatFare];
+    if (details.seatFare) {
+        cell.fareLabel.text = [NSString stringWithFormat:@"%@ rupees",details.seatFare];
+   
+    }
     cell.fromToLabel.text = [NSString stringWithFormat:@"%@ --> %@",details.fromLocation.name,details.toLocation.name];
     
     NSString *dateString = [NSDateFormatter localizedStringFromDate:details.timestamp
                                                           dateStyle:NSDateFormatterShortStyle
                                                           timeStyle:NSDateFormatterShortStyle];
-    cell.timeLable.text = dateString;
+    if (dateString) {
+        cell.timeLable.text = dateString;
+   
+    }
     GoContactSyncEntry *entry =[[[GoContactSync sharedInstance] syncedContacts] valueForKey:details.driverMSISDN];
     cell.nameLabel.text = entry.name;
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    MBProgressHUD *HUDView = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    HUDView.mode = MBProgressHUDModeIndeterminate;
+    HUDView.labelText = @"Processing...";
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        MBProgressHUD *HUDViewCompleted = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        HUDViewCompleted.mode = MBProgressHUDModeCustomView;
+        HUDViewCompleted.labelText = @"Completed";
+        HUDViewCompleted.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Checkmark.png"]];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        });
+    });
+
 }
 
 

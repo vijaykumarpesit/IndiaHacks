@@ -8,6 +8,12 @@
 
 #import "GoUserDetailsCell.h"
 
+@interface GoUserDetailsCell () <UITextFieldDelegate>
+
+@end
+
+
+
 @implementation GoUserDetailsCell
 
 - (void)awakeFromNib {
@@ -19,5 +25,6 @@
 
     // Configure the view for the selected state
 }
+
 
 @end

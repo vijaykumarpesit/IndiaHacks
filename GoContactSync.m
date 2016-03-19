@@ -35,9 +35,9 @@
 - (instancetype) init {
     self = [super init];
     if (self) {
-        if(![[NSUserDefaults standardUserDefaults] boolForKey:@"isAddressBookSynced"]){
+        //if(![[NSUserDefaults standardUserDefaults] boolForKey:@"isAddressBookSynced"]){
             [self syncAddressBookIfNeeded];
-        }
+        //}
     }
     return self;
 }

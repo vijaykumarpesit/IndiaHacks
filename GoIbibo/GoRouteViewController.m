@@ -211,7 +211,9 @@
 
 - (void)pickerView:(UIPickerView *)pV didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    self.selectedPermissionIndex = row;
 }
+
 
 - (IBAction)dateChanged:(id)sender {
 
@@ -246,7 +248,7 @@
 
     }
     
-    tripDetails[@"msisdn"] = @"996499396";//[[[GoUserModelManager sharedManager] currentUser] phoneNumber];
+    tripDetails[@"msisdn"] = [[[GoUserModelManager sharedManager] currentUser] phoneNumber];
     
     if (self.numberOfSeets.text.length >0) {
         tripDetails[@"numberOfSeats"] = self.numberOfSeets.text;
@@ -320,4 +322,9 @@
 
 //- (NSDate *)dateAfterAdding
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    
+    [textField resignFirstResponder];
+    return YES;
+}
 @end

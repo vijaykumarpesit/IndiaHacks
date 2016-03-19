@@ -538,7 +538,7 @@
     GoLocation *location = [[GoLocation alloc] init];
 
     if (self.isInLongTripMode) {
-        location.name = @"Bengaluru";
+        location.name = @"Bangalore";
         location.location = [[CLLocation alloc] initWithLatitude:12.9667f longitude:77.5667f];
         
     } else {
